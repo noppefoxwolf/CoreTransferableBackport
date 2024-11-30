@@ -232,16 +232,16 @@ struct TransferableTests {
         #expect(fileObject.suggestedFilename == "file.txt")
     }
     
-    @Test(.enabled(if: false))
+    @Test
     func backportSuggestedFilename() async throws {
         let dataObject = DataObject(text: "Hello, World!")
-        #expect(dataObject.backport.suggestedFilename == "file.txt")
+        #expect(dataObject.backport.suggestedFilename == "data.txt")
         
         let codableObject = CodableObject(text: "Hello, World!")
-        #expect(codableObject.backport.suggestedFilename == "file.txt")
+        #expect(codableObject.backport.suggestedFilename == "codable.txt")
         
         let proxyObject = ProxyObject(text: "Hello, World!")
-        #expect(proxyObject.backport.suggestedFilename == "file.txt")
+        #expect(proxyObject.backport.suggestedFilename == "proxy.txt")
         
         let fileObject = FileObject(text: "Hello, World!")
         #expect(fileObject.backport.suggestedFilename == "file.txt")

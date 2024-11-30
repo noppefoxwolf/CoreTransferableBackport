@@ -118,6 +118,8 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
     
     // FIXME: Implement
     public var suggestedFilename: String? {
-        nil
+        let itemProvider = NSItemProvider()
+        itemProvider.register(self.base)
+        return itemProvider.suggestedName
     }
 }
