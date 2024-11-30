@@ -113,6 +113,218 @@ struct TransferableTests {
         )
         #expect(importedObject.text == object.text)
     }
+    
+    @available(iOS 18.2, *)
+    @Test
+    func contentTypes() async throws {
+        let dataObject = DataObject(text: "Hello, World!")
+        #expect(dataObject.importedContentTypes().count == 1)
+        #expect(dataObject.importedContentTypes().contains(.text))
+        #expect(dataObject.exportedContentTypes().count == 1)
+        #expect(dataObject.exportedContentTypes().contains(.text))
+        
+        let codableObject = CodableObject(text: "Hello, World!")
+        #expect(codableObject.importedContentTypes().count == 1)
+        #expect(codableObject.importedContentTypes().contains(.text))
+        #expect(codableObject.exportedContentTypes().count == 1)
+        #expect(codableObject.exportedContentTypes().contains(.text))
+        
+        let proxyObject = ProxyObject(text: "Hello, World!")
+        #expect(proxyObject.importedContentTypes().count == 1)
+        #expect(proxyObject.importedContentTypes().contains(.utf8PlainText))
+        #expect(proxyObject.exportedContentTypes().count == 1)
+        #expect(proxyObject.exportedContentTypes().contains(.utf8PlainText))
+        
+        let fileObject = FileObject(text: "Hello, World!")
+        #expect(fileObject.importedContentTypes().count == 1)
+        #expect(fileObject.importedContentTypes().contains(.text))
+        #expect(fileObject.exportedContentTypes().count == 1)
+        #expect(fileObject.exportedContentTypes().contains(.text))
+    }
+    
+    @Test
+    func backportContentTypes() async throws {
+        let dataObject = DataObject(text: "Hello, World!")
+        #expect(dataObject.backport.importedContentTypes().count == 1)
+        #expect(dataObject.backport.importedContentTypes().contains(.text))
+        #expect(dataObject.backport.exportedContentTypes().count == 1)
+        #expect(dataObject.backport.exportedContentTypes().contains(.text))
+        
+        let codableObject = CodableObject(text: "Hello, World!")
+        #expect(codableObject.backport.importedContentTypes().count == 1)
+        #expect(codableObject.backport.importedContentTypes().contains(.text))
+        #expect(codableObject.backport.exportedContentTypes().count == 1)
+        #expect(codableObject.backport.exportedContentTypes().contains(.text))
+        
+        let proxyObject = ProxyObject(text: "Hello, World!")
+        #expect(proxyObject.backport.importedContentTypes().count == 1)
+        #expect(proxyObject.backport.importedContentTypes().contains(.utf8PlainText))
+        #expect(proxyObject.backport.exportedContentTypes().count == 1)
+        #expect(proxyObject.backport.exportedContentTypes().contains(.utf8PlainText))
+        
+        let fileObject = FileObject(text: "Hello, World!")
+        #expect(fileObject.backport.importedContentTypes().count == 1)
+        #expect(fileObject.backport.importedContentTypes().contains(.text))
+        #expect(fileObject.backport.exportedContentTypes().count == 1)
+        #expect(fileObject.backport.exportedContentTypes().contains(.text))
+    }
+    
+    @available(iOS 18.2, *)
+    @Test
+    func staticContentTypes() async throws {
+        #expect(DataObject.importedContentTypes().count == 1)
+        #expect(DataObject.importedContentTypes().contains(.text))
+        #expect(DataObject.exportedContentTypes().count == 1)
+        #expect(DataObject.exportedContentTypes().contains(.text))
+        
+        #expect(CodableObject.importedContentTypes().count == 1)
+        #expect(CodableObject.importedContentTypes().contains(.text))
+        #expect(CodableObject.exportedContentTypes().count == 1)
+        #expect(CodableObject.exportedContentTypes().contains(.text))
+        
+        #expect(ProxyObject.importedContentTypes().count == 1)
+        #expect(ProxyObject.importedContentTypes().contains(.utf8PlainText))
+        #expect(ProxyObject.exportedContentTypes().count == 1)
+        #expect(ProxyObject.exportedContentTypes().contains(.utf8PlainText))
+        
+        #expect(FileObject.importedContentTypes().count == 1)
+        #expect(FileObject.importedContentTypes().contains(.text))
+        #expect(FileObject.exportedContentTypes().count == 1)
+        #expect(FileObject.exportedContentTypes().contains(.text))
+    }
+    
+    @Test(.enabled(if: false))
+    func backportStaticContentTypes() async throws {
+        #expect(DataObject.backport.importedContentTypes().count == 1)
+        #expect(DataObject.backport.importedContentTypes().contains(.text))
+        #expect(DataObject.backport.exportedContentTypes().count == 1)
+        #expect(DataObject.backport.exportedContentTypes().contains(.text))
+        
+        #expect(CodableObject.backport.importedContentTypes().count == 1)
+        #expect(CodableObject.backport.importedContentTypes().contains(.text))
+        #expect(CodableObject.backport.exportedContentTypes().count == 1)
+        #expect(CodableObject.backport.exportedContentTypes().contains(.text))
+        
+        #expect(ProxyObject.backport.importedContentTypes().count == 1)
+        #expect(ProxyObject.backport.importedContentTypes().contains(.utf8PlainText))
+        #expect(ProxyObject.backport.exportedContentTypes().count == 1)
+        #expect(ProxyObject.backport.exportedContentTypes().contains(.utf8PlainText))
+        
+        #expect(FileObject.backport.importedContentTypes().count == 1)
+        #expect(FileObject.backport.importedContentTypes().contains(.text))
+        #expect(FileObject.backport.exportedContentTypes().count == 1)
+        #expect(FileObject.backport.exportedContentTypes().contains(.text))
+    }
+    
+    @available(iOS 18.2, *)
+    @Test
+    func suggestedFilename() async throws {
+        let dataObject = DataObject(text: "Hello, World!")
+        #expect(dataObject.suggestedFilename == "data.txt")
+        
+        let codableObject = CodableObject(text: "Hello, World!")
+        #expect(codableObject.suggestedFilename == "codable.txt")
+        
+        let proxyObject = ProxyObject(text: "Hello, World!")
+        #expect(proxyObject.suggestedFilename == "proxy.txt")
+        
+        let fileObject = FileObject(text: "Hello, World!")
+        #expect(fileObject.suggestedFilename == "file.txt")
+    }
+    
+    @Test(.enabled(if: false))
+    func backportSuggestedFilename() async throws {
+        let dataObject = DataObject(text: "Hello, World!")
+        #expect(dataObject.backport.suggestedFilename == "file.txt")
+        
+        let codableObject = CodableObject(text: "Hello, World!")
+        #expect(codableObject.backport.suggestedFilename == "file.txt")
+        
+        let proxyObject = ProxyObject(text: "Hello, World!")
+        #expect(proxyObject.backport.suggestedFilename == "file.txt")
+        
+        let fileObject = FileObject(text: "Hello, World!")
+        #expect(fileObject.backport.suggestedFilename == "file.txt")
+    }
+    
+    @available(iOS 18.2, *)
+    @Test
+    func withExportedFile() async throws {
+        let dataObject = DataObject(text: "Hello, World!")
+        let exportedDataResult = try await dataObject.withExportedFile(
+            contentType: .text,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(exportedDataResult == "Hello, World!")
+        
+        let codableObject = CodableObject(text: "Hello, World!")
+        let codableDataResult = try await codableObject.withExportedFile(
+            contentType: .text,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(codableDataResult == #"{"text":"Hello, World!"}"#)
+        
+        let proxyObject = ProxyObject(text: "Hello, World!")
+        let proxyDataResult = try await proxyObject.withExportedFile(
+            contentType: .utf8PlainText,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(proxyDataResult == "Hello, World!")
+        
+        let fileObject = FileObject(text: "Hello, World!")
+        let fileDataResult = try await fileObject.withExportedFile(
+            contentType: .text,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(fileDataResult == "Hello, World!")
+    }
+    
+    @Test
+    func backportWithExportedFile() async throws {
+        let dataObject = DataObject(text: "Hello, World!")
+        let exportedDataResult = try await dataObject.backport.withExportedFile(
+            contentType: .text,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(exportedDataResult == "Hello, World!")
+        
+        let codableObject = CodableObject(text: "Hello, World!")
+        let codableDataResult = try await codableObject.backport.withExportedFile(
+            contentType: .text,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(codableDataResult == #"{"text":"Hello, World!"}"#)
+        
+        let proxyObject = ProxyObject(text: "Hello, World!")
+        let proxyDataResult = try await proxyObject.backport.withExportedFile(
+            contentType: .utf8PlainText,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(proxyDataResult == "Hello, World!")
+        
+        let fileObject = FileObject(text: "Hello, World!")
+        let fileDataResult = try await fileObject.backport.withExportedFile(
+            contentType: .text,
+            fileHandler: { url in
+                try String(contentsOf: url, encoding: .utf8)
+            }
+        )
+        #expect(fileDataResult == "Hello, World!")
+    }
 }
 
 struct DataObject: Transferable {
@@ -122,6 +334,7 @@ struct DataObject: Transferable {
         DataRepresentation(exportedContentType: .text) { object in
             object.text.data(using: .utf8)!
         }
+        .suggestedFileName("data.txt")
         DataRepresentation(importedContentType: .text) { data in
             let text = String(data: data, encoding: .utf8)!
             return DataObject(text: text)
@@ -134,6 +347,7 @@ struct CodableObject: Transferable, Codable {
     
     static var transferRepresentation: some TransferRepresentation {
         CodableRepresentation(contentType: .text)
+            .suggestedFileName("codable.txt")
     }
 }
 
@@ -145,6 +359,7 @@ struct ProxyObject: Transferable, Codable {
             exporting: \.text,
             importing: { ProxyObject(text: $0) }
         )
+        .suggestedFileName("proxy.txt")
     }
 }
 
@@ -167,5 +382,6 @@ struct FileObject: Transferable {
                 return FileObject(text: text)
             }
         )
+        .suggestedFileName("file.txt")
     }
 }

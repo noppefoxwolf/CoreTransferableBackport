@@ -52,6 +52,11 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
         }
     }
     
+    public func withExportedFile<Result>(contentType: UTType?, fileHandler: (URL) async throws -> Result) async throws -> Result {
+        let url = try await export(to: URL.cachesDirectory, contentType: contentType)
+        return try await fileHandler(url)
+    }
+    
     public static func `init`(
         importing data: Data,
         contentType: UTType?
@@ -87,5 +92,32 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
                 }
             }
         }
+    }
+    
+    public func importedContentTypes() -> [UTType] {
+        let itemProvider = NSItemProvider()
+        itemProvider.register(self.base)
+        return itemProvider.registeredTypeIdentifiers().compactMap { UTType($0) }
+    }
+    
+    public func exportedContentTypes() -> [UTType] {
+        let itemProvider = NSItemProvider()
+        itemProvider.register(self.base)
+        return itemProvider.registeredTypeIdentifiers().compactMap { UTType($0) }
+    }
+    
+    // FIXME: Implement
+    public static func importedContentTypes() -> [UTType] {
+        []
+    }
+    
+    // FIXME: Implement
+    public static func exportedContentTypes() -> [UTType] {
+        []
+    }
+    
+    // FIXME: Implement
+    public var suggestedFilename: String? {
+        nil
     }
 }
