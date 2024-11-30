@@ -48,4 +48,33 @@ public final class Compatible<T: Transferable & Sendable>: Sendable {
             try await T.backport.`init`(importing: url, contentType: contentType)
         }
     }
+    
+    public func importedContentTypes() -> [UTType] {
+        fatalError()
+    }
+    
+    public func exportedContentTypes() -> [UTType] {
+        if #available(iOS 18.2, *) {
+            base.exportedContentTypes()
+        } else {
+            base.backport.exportedContentTypes()
+        }
+    }
+    
+    public static func importedContentTypes() -> [UTType] {
+        fatalError()
+    }
+    
+    public static func exportedContentTypes() -> [UTType] {
+        fatalError()
+    }
+    
+    public var suggestedFilename: String? {
+        if #available(iOS 18.2, *) {
+            base.suggestedFilename
+        } else {
+            base.backport.suggestedFilename
+        }
+    }
+
 }
