@@ -140,6 +140,15 @@ struct TransferableTests {
         #expect(fileObject.importedContentTypes().contains(.text))
         #expect(fileObject.exportedContentTypes().count == 1)
         #expect(fileObject.exportedContentTypes().contains(.text))
+        
+        let mixedObject = MixedObject(text: "Hello, World!")
+        #expect(mixedObject.importedContentTypes().count == 2)
+        #expect(mixedObject.importedContentTypes().contains(.text))
+        #expect(mixedObject.importedContentTypes().contains(.png))
+        #expect(mixedObject.exportedContentTypes().count == 3)
+        #expect(mixedObject.exportedContentTypes().contains(.text))
+        #expect(mixedObject.exportedContentTypes().contains(.png))
+        #expect(mixedObject.exportedContentTypes().contains(.mpeg4Movie))
     }
     
     @Test
@@ -167,6 +176,15 @@ struct TransferableTests {
         #expect(fileObject.backport.importedContentTypes().contains(.text))
         #expect(fileObject.backport.exportedContentTypes().count == 1)
         #expect(fileObject.backport.exportedContentTypes().contains(.text))
+        
+        let mixedObject = MixedObject(text: "Hello, World!")
+        #expect(mixedObject.backport.importedContentTypes().count == 2)
+        #expect(mixedObject.backport.importedContentTypes().contains(.text))
+        #expect(mixedObject.backport.importedContentTypes().contains(.png))
+        #expect(mixedObject.backport.exportedContentTypes().count == 3)
+        #expect(mixedObject.backport.exportedContentTypes().contains(.text))
+        #expect(mixedObject.backport.exportedContentTypes().contains(.png))
+        #expect(mixedObject.backport.exportedContentTypes().contains(.mpeg4Movie))
     }
     
     @available(iOS 18.2, *)
@@ -191,9 +209,17 @@ struct TransferableTests {
         #expect(FileObject.importedContentTypes().contains(.text))
         #expect(FileObject.exportedContentTypes().count == 1)
         #expect(FileObject.exportedContentTypes().contains(.text))
+        
+        #expect(MixedObject.importedContentTypes().count == 2)
+        #expect(MixedObject.importedContentTypes().contains(.text))
+        #expect(MixedObject.importedContentTypes().contains(.png))
+        #expect(MixedObject.exportedContentTypes().count == 3)
+        #expect(MixedObject.exportedContentTypes().contains(.text))
+        #expect(MixedObject.exportedContentTypes().contains(.png))
+        #expect(MixedObject.exportedContentTypes().contains(.mpeg4Movie))
     }
     
-    @Test(.enabled(if: false))
+    @Test
     func backportStaticContentTypes() async throws {
         #expect(DataObject.backport.importedContentTypes().count == 1)
         #expect(DataObject.backport.importedContentTypes().contains(.text))
@@ -214,6 +240,14 @@ struct TransferableTests {
         #expect(FileObject.backport.importedContentTypes().contains(.text))
         #expect(FileObject.backport.exportedContentTypes().count == 1)
         #expect(FileObject.backport.exportedContentTypes().contains(.text))
+        
+        #expect(MixedObject.backport.importedContentTypes().count == 2)
+        #expect(MixedObject.backport.importedContentTypes().contains(.text))
+        #expect(MixedObject.backport.importedContentTypes().contains(.png))
+        #expect(MixedObject.backport.exportedContentTypes().count == 3)
+        #expect(MixedObject.backport.exportedContentTypes().contains(.text))
+        #expect(MixedObject.backport.exportedContentTypes().contains(.png))
+        #expect(MixedObject.backport.exportedContentTypes().contains(.mpeg4Movie))
     }
     
     @available(iOS 18.2, *)
@@ -383,5 +417,27 @@ struct FileObject: Transferable {
             }
         )
         .suggestedFileName("file.txt")
+    }
+}
+
+struct MixedObject: Transferable {
+    let text: String
+    
+    static var transferRepresentation: some TransferRepresentation {
+        DataRepresentation(exportedContentType: .png) { _ in
+            Data()
+        }
+        DataRepresentation(exportedContentType: .text) { _ in
+            Data()
+        }
+        DataRepresentation(exportedContentType: .mpeg4Movie) { _ in
+            Data()
+        }
+        DataRepresentation(importedContentType: .png) { _ in
+            MixedObject(text: "")
+        }
+        DataRepresentation(importedContentType: .text) { _ in
+            MixedObject(text: "")
+        }
     }
 }

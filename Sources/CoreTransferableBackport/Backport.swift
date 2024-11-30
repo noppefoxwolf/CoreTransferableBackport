@@ -94,10 +94,9 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
         }
     }
     
+    // FIXME: Implement
     public func importedContentTypes() -> [UTType] {
-        let itemProvider = NSItemProvider()
-        itemProvider.register(self.base)
-        return itemProvider.registeredContentTypes
+        []
     }
     
     public func exportedContentTypes() -> [UTType] {
