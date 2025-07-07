@@ -8,3 +8,11 @@ extension Transferable where Self: Sendable {
     
     public static var backport: Backport<Self>.Type { Backport<Self>.self }
 }
+ 
+extension Transferable where Self: Sendable {
+    public var compatible: Compatible<Self> {
+        Compatible(base: self)
+    }
+    
+    public static var compatible: Compatible<Self>.Type { Compatible<Self>.self }
+}
