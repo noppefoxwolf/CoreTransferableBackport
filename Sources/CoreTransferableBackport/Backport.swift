@@ -3,11 +3,11 @@ import UniformTypeIdentifiers
 
 public final class Backport<T: Transferable & Sendable>: Sendable {
     let base: T
-    
+
     init(base: T) {
         self.base = base
     }
-    
+
     public func exported(as contentType: UTType?) async throws -> Data {
         let itemProvider = NSItemProvider()
         itemProvider.register(self.base)
@@ -20,14 +20,14 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
             fatalError()
         }
     }
-    
+
     public func export(
         to destinationDirectory: URL,
         contentType: UTType?
     ) async throws -> URL {
         let itemProvider = NSItemProvider()
         itemProvider.register(self.base)
-        
+
         return try await withCheckedThrowingContinuation { continuation in
             itemProvider.loadFileRepresentation(
                 forTypeIdentifier: contentType?.identifier ?? "",
@@ -51,12 +51,15 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
             )
         }
     }
-    
-    public func withExportedFile<Result>(contentType: UTType?, fileHandler: (URL) async throws -> Result) async throws -> Result {
+
+    public func withExportedFile<Result>(
+        contentType: UTType?,
+        fileHandler: (URL) async throws -> Result
+    ) async throws -> Result {
         let url = try await export(to: URL.cachesDirectory, contentType: contentType)
         return try await fileHandler(url)
     }
-    
+
     public static func `init`(
         importing data: Data,
         contentType: UTType?
@@ -76,7 +79,7 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
             }
         }
     }
-    
+
     public static func `init`(
         importing url: URL,
         contentType: UTType?
@@ -93,28 +96,28 @@ public final class Backport<T: Transferable & Sendable>: Sendable {
             }
         }
     }
-    
+
     // FIXME: Implement
     public func importedContentTypes() -> [UTType] {
         []
     }
-    
+
     public func exportedContentTypes() -> [UTType] {
         let itemProvider = NSItemProvider()
         itemProvider.register(self.base)
         return itemProvider.registeredContentTypes
     }
-    
+
     // FIXME: Implement
     public static func importedContentTypes() -> [UTType] {
         []
     }
-    
+
     // FIXME: Implement
     public static func exportedContentTypes() -> [UTType] {
         []
     }
-    
+
     public var suggestedFilename: String? {
         let itemProvider = NSItemProvider()
         itemProvider.register(self.base)
