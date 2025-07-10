@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 @Suite
 struct TransferableTests {
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func dataRepresentation() async throws {
         let object = DataObject(text: "Hello, World!")
@@ -33,7 +33,7 @@ struct TransferableTests {
         #expect(importedObject.text == object.text)
     }
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func codableRepresentation() async throws {
         let object = CodableObject(text: "Hello, World!")
@@ -59,7 +59,7 @@ struct TransferableTests {
         #expect(importedObject.text == object.text)
     }
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func proxyRepresentation() async throws {
         let object = ProxyObject(text: "Hello, World!")
@@ -84,7 +84,7 @@ struct TransferableTests {
         #expect(importedObject.text == object.text)
     }
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func fileRepresentation() async throws {
         let object = FileObject(text: "Hello, World!")
@@ -115,7 +115,7 @@ struct TransferableTests {
         #expect(importedObject.text == object.text)
     }
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func contentTypes() async throws {
         let dataObject = DataObject(text: "Hello, World!")
@@ -188,7 +188,7 @@ struct TransferableTests {
         #expect(mixedObject.backport.exportedContentTypes().contains(.mpeg4Movie))
     }
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func staticContentTypes() async throws {
         #expect(DataObject.importedContentTypes().count == 1)
@@ -251,7 +251,7 @@ struct TransferableTests {
         #expect(MixedObject.backport.exportedContentTypes().contains(.mpeg4Movie))
     }
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func suggestedFilename() async throws {
         let dataObject = DataObject(text: "Hello, World!")
@@ -282,7 +282,7 @@ struct TransferableTests {
         #expect(fileObject.backport.suggestedFilename == "file.txt")
     }
 
-    @available(iOS 18.2, *)
+    @available(iOS 18.2, macOS 15.2, visionOS 2.2, *)
     @Test
     func withExportedFile() async throws {
         let dataObject = DataObject(text: "Hello, World!")
